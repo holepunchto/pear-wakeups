@@ -1,6 +1,6 @@
 # pear-wakeups
 
-> Pear platform and application update notifications
+> Receive wakeup events, including link clicks external to app
 
 ## Usage
 

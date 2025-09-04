@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "type": "commonjs",
-  "description": "Pear platform and application update notifications",
+  "description": "Receive wakeup events, including link clicks external to app",
   "license": "Apache-2.0",
   "files": [],
   "scripts": {
