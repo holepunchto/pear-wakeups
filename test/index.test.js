@@ -5,6 +5,7 @@ const sodium = require('sodium-native')
 const IPC = require('pear-ipc')
 const Iambus = require('iambus')
 const { isWindows } = require('which-runtime')
+global.Pear = {}
 const wakeups = require('..')
 
 function pipeId (s) {
@@ -37,6 +38,7 @@ test('wakeups()', async (t) => {
   class API {
     static IPC = kIPC
     get [kIPC] () { return ipc }
+    teardown = t.teardown
   }
   global.Pear = new API()
 
@@ -70,6 +72,7 @@ test('wakeups(listener)', async (t) => {
   class API {
     static IPC = kIPC
     get [kIPC] () { return ipc }
+    teardown = t.teardown
   }
   global.Pear = new API()
 
