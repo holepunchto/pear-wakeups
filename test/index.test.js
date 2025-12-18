@@ -8,7 +8,7 @@ const { isWindows } = require('which-runtime')
 global.Pear = {}
 const wakeups = require('..')
 
-function pipeId (s) {
+function pipeId(s) {
   const buf = b4a.allocUnsafe(32)
   sodium.crypto_generichash(buf, b4a.from(s))
   return b4a.toString(buf, 'hex')
@@ -22,9 +22,16 @@ test('wakeups()', async (t) => {
   const srv = new IPC.Server({
     socketPath,
     handlers: {
-      messages (pattern) {
+      messages(pattern) {
         const sub = bus.sub(pattern)
-        bus.pub({ type: 'pear/wakeup', app: false, version: { fork: 0, length: 0, key: null }, info: null, updating: true, updated: false })
+        bus.pub({
+          type: 'pear/wakeup',
+          app: false,
+          version: { fork: 0, length: 0, key: null },
+          info: null,
+          updating: true,
+          updated: false
+        })
         setImmediate(() => sub.end())
         return sub
       }
@@ -37,14 +44,26 @@ test('wakeups()', async (t) => {
   await ipc.ready()
   class API {
     static IPC = kIPC
-    get [kIPC] () { return ipc }
+    get [kIPC]() {
+      return ipc
+    }
     teardown = t.teardown
   }
   global.Pear = new API()
 
   const stream = wakeups()
   stream.on('data', (msg) => {
-    t.alike({ type: 'pear/wakeup', app: false, version: { fork: 0, length: 0, key: null }, info: null, updating: true, updated: false }, msg)
+    t.alike(
+      {
+        type: 'pear/wakeup',
+        app: false,
+        version: { fork: 0, length: 0, key: null },
+        info: null,
+        updating: true,
+        updated: false
+      },
+      msg
+    )
   })
 })
 
@@ -56,9 +75,16 @@ test('wakeups(listener)', async (t) => {
   const srv = new IPC.Server({
     socketPath,
     handlers: {
-      messages (pattern) {
+      messages(pattern) {
         const sub = bus.sub(pattern)
-        bus.pub({ type: 'pear/wakeup', app: false, version: { fork: 0, length: 0, key: null }, info: null, updating: true, updated: false })
+        bus.pub({
+          type: 'pear/wakeup',
+          app: false,
+          version: { fork: 0, length: 0, key: null },
+          info: null,
+          updating: true,
+          updated: false
+        })
         setImmediate(() => sub.end())
         return sub
       }
@@ -71,12 +97,24 @@ test('wakeups(listener)', async (t) => {
   await ipc.ready()
   class API {
     static IPC = kIPC
-    get [kIPC] () { return ipc }
+    get [kIPC]() {
+      return ipc
+    }
     teardown = t.teardown
   }
   global.Pear = new API()
 
   wakeups((upd) => {
-    t.alike({ type: 'pear/wakeup', app: false, version: { fork: 0, length: 0, key: null }, info: null, updating: true, updated: false }, upd)
+    t.alike(
+      {
+        type: 'pear/wakeup',
+        app: false,
+        version: { fork: 0, length: 0, key: null },
+        info: null,
+        updating: true,
+        updated: false
+      },
+      upd
+    )
   })
 })
